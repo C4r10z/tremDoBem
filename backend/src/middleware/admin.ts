@@ -2,7 +2,7 @@ import crypto from "crypto";
 
 type AdminTokenPayload = {
   user: string;
-  iat: number; // issued at (ms)
+  iat: number; // timestamp em ms
 };
 
 function b64urlEncode(input: Buffer | string) {
@@ -27,8 +27,7 @@ function sign(data: string, secret: string) {
 export function createAdminToken(user: string) {
   const secret = process.env.ADMIN_TOKEN_SECRET || "dev_secret_change_me";
   const payload: AdminTokenPayload = { user, iat: Date.now() };
-  const payloadStr = JSON.stringify(payload);
-  const payloadB64 = b64urlEncode(payloadStr);
+  const payloadB64 = b64urlEncode(JSON.stringify(payload));
   const sig = sign(payloadB64, secret);
   return `${payloadB64}.${sig}`;
 }
@@ -44,9 +43,13 @@ export function verifyAdminToken(token: string) {
 
   try {
     const payload = JSON.parse(b64urlDecode(payloadB64)) as AdminTokenPayload;
-    // expiração opcional (ex: 7 dias)
-    const maxAgeMs = Number(process.env.ADMIN_TOKEN_MAXAGE_MS || 7 * 24 * 60 * 60 * 1000);
+
+    // expiração (padrão 7 dias)
+    const maxAgeMs = Number(
+      process.env.ADMIN_TOKEN_MAXAGE_MS || 7 * 24 * 60 * 60 * 1000
+    );
     if (Date.now() - payload.iat > maxAgeMs) return null;
+
     return payload;
   } catch {
     return null;

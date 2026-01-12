@@ -2,16 +2,3 @@
   base = "web"
   command = "npm run build"
   publish = "dist"
-
-# React Router (SPA) - /admin, /checkout etc
-[[redirects]]
-  from = "/*"
-  to = "/index.html"
-  status = 200
-
-# Proxy para o backend (evita CORS e evita env var)
-[[redirects]]
-  from = "/api/*"
-  to = "https://tremdobem-1.onrender.com/:splat"
-  status = 200
-  force = true

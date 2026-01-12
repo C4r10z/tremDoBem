@@ -32,14 +32,21 @@ export type Order = {
   notes?: string;
 };
 
-const BASE_URL = import.meta.env.VITE_API_URL || "http://localhost:3334";
+const BASE_URL = "/api";
 
 function token() {
   return localStorage.getItem("tdb_admin_token") || "";
 }
 
 async function http<T>(path: string, init?: RequestInit): Promise<T> {
-  const res = await fetch(`${BASE_URL}${path}`, init);
+  const headers: Record<string, string> = {
+    ...(init?.headers as any),
+  };
+
+  // coloca JSON só quando tiver body e ainda não tiver Content-Type
+  if (init?.body && !headers["Content-Type"]) headers["Content-Type"] = "application/json";
+
+  const res = await fetch(`${BASE_URL}${path}`, { ...init, headers });
 
   if (!res.ok) {
     let err: any = { status: res.status };
@@ -51,6 +58,7 @@ async function http<T>(path: string, init?: RequestInit): Promise<T> {
 
   return res.json() as Promise<T>;
 }
+
 
 /* =========================
    PUBLIC

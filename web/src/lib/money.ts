@@ -1,0 +1,3 @@
+export function brl(n: number) {
+  return n.toLocaleString("pt-BR", { style: "currency", currency: "BRL" });
+}

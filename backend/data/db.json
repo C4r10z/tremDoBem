@@ -1,0 +1,92 @@
+{
+  "products": [
+    {
+      "id": "p_19bb284e50fe6be7",
+      "name": "Semente de Abóbora",
+      "pricePer100g": 8.9,
+      "image": "/images/produto1.jpeg",
+      "active": true
+    },
+    {
+      "id": "p_19bb284e50f077b8",
+      "name": "Castanha do Pará",
+      "pricePer100g": 19.99,
+      "image": "/images/produto2.jpeg",
+      "active": true
+    },
+    {
+      "id": "p_19bb284e50f81e98",
+      "name": "Canela Inteira",
+      "pricePer100g": 14,
+      "image": "/images/produto3.jpeg",
+      "active": true
+    },
+    {
+      "id": "p_19bb284e50f36373",
+      "name": "Farinha de Açaí",
+      "pricePer100g": 19,
+      "image": "/images/produto4.jpeg",
+      "active": true
+    }
+  ],
+  "orders": [
+    {
+      "id": "o_19bb2cc41d99d555",
+      "createdAt": "2026-01-12T15:21:29.305Z",
+      "status": "CANCELED",
+      "customer": {
+        "name": "CARLOS EDUARDO LIMA E SILVA",
+        "phone": "32991137334",
+        "address": "Rua Paranapanema",
+        "reference": "fdsf"
+      },
+      "items": [
+        {
+          "productId": "p_19bb284e50f81e98",
+          "name": "Canela Inteira",
+          "pricePer100g": 14,
+          "grams": 300,
+          "lineTotal": 42,
+          "image": "/images/produto3.jpeg"
+        },
+        {
+          "productId": "p_19bb284e50f077b8",
+          "name": "Castanha do Pará",
+          "pricePer100g": 19.99,
+          "grams": 100,
+          "lineTotal": 19.99,
+          "image": "/images/produto2.jpeg"
+        }
+      ],
+      "totals": {
+        "subtotal": 61.99
+      },
+      "notes": "dsfsf"
+    },
+    {
+      "id": "o_19bb2a794c36c383",
+      "createdAt": "2026-01-12T14:41:25.699Z",
+      "status": "DELIVERED",
+      "customer": {
+        "name": "CARLOS EDUARDO LIMA E SILVA",
+        "phone": "32991137334",
+        "address": "Rua Paranapanema",
+        "reference": "perto"
+      },
+      "items": [
+        {
+          "productId": "p_19bb284e50fe6be7",
+          "name": "Semente de Abóbora",
+          "pricePer100g": 8.9,
+          "grams": 400,
+          "lineTotal": 35.6,
+          "image": "/images/produto1.jpeg"
+        }
+      ],
+      "totals": {
+        "subtotal": 35.6
+      },
+      "notes": "carçps"
+    }
+  ]
+}

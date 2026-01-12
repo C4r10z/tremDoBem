@@ -1,0 +1,75 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  color-scheme: dark;
+
+  /* Fundo (nada de pastel, nada de branco) */
+  --bg0: #061a12;   /* base */
+  --bg1: #05261a;   /* variação */
+  --bg2: #083322;   /* luz */
+
+  /* Marca */
+  --green: #19c37d;
+  --green2: #16a34a;
+
+  /* Texto */
+  --text: #e9f5ee;
+  --muted: rgba(233, 245, 238, 0.70);
+
+  /* Superfícies (cards / header / drawer) */
+  --panel: rgba(255, 255, 255, 0.06);
+  --panel2: rgba(255, 255, 255, 0.10);
+  --stroke: rgba(255, 255, 255, 0.10);
+
+  /* Botões neutros */
+  --btn: rgba(255, 255, 255, 0.08);
+  --btnHover: rgba(255, 255, 255, 0.12);
+}
+
+* { box-sizing: border-box; }
+html, body { height: 100%; }
+
+body {
+  margin: 0;
+  font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Inter, Arial;
+  color: var(--text);
+
+  /* FUNDO LINDO, moderno e simples (sem textura, sem pattern) */
+  background:
+    radial-gradient(900px 600px at 15% 12%, rgba(25,195,125,0.18), transparent 60%),
+    radial-gradient(1000px 700px at 85% 18%, rgba(22,163,74,0.16), transparent 62%),
+    radial-gradient(900px 600px at 55% 90%, rgba(255,255,255,0.06), transparent 60%),
+    linear-gradient(180deg, var(--bg2) 0%, var(--bg1) 45%, var(--bg0) 100%);
+}
+
+/* um “véu” bem leve pra dar acabamento */
+#root {
+  min-height: 100vh;
+  background: linear-gradient(to bottom, rgba(0,0,0,0.10), rgba(0,0,0,0.22));
+}
+
+/* painéis */
+.pastel-panel {
+  background: var(--panel);
+  border: 1px solid var(--stroke);
+  backdrop-filter: blur(14px);
+}
+
+.pastel-panel-strong {
+  background: var(--panel2);
+  border: 1px solid var(--stroke);
+  backdrop-filter: blur(16px);
+}
+
+/* sombra premium */
+.glow {
+  box-shadow:
+    0 0 0 1px rgba(255,255,255,0.06),
+    0 18px 70px rgba(0,0,0,0.55);
+}
+
+/* scrollbar limpa */
+.no-scrollbar::-webkit-scrollbar { display: none; }
+.no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }

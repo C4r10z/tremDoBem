@@ -1,0 +1,14 @@
+2026/01/12-12:47:56.522 5d54 Reusing MANIFEST C:\Users\carlo\OneDrive\Documentos\TremDoBem\whatsapp-bot\.wwebjs_auth\session-trem-do-bem\Default\IndexedDB\https_web.whatsapp.com_0.indexeddb.leveldb/MANIFEST-000001
+2026/01/12-12:47:56.522 5d54 Recovering log #176
+2026/01/12-12:47:56.527 5d54 Reusing old log C:\Users\carlo\OneDrive\Documentos\TremDoBem\whatsapp-bot\.wwebjs_auth\session-trem-do-bem\Default\IndexedDB\https_web.whatsapp.com_0.indexeddb.leveldb/000176.log 
+2026/01/12-12:47:56.528 5d54 Delete type=2 #174
+2026/01/12-12:47:57.727 be8 Level-0 table #181: started
+2026/01/12-12:47:57.731 be8 Level-0 table #181: 151434 bytes OK
+2026/01/12-12:47:57.732 be8 Delete type=0 #176
+2026/01/12-12:47:57.738 be8 Manual compaction at level-0 from '\x00F\x00\x00\x00' @ 72057594037927935 : 1 .. '\x00G\x00\x00\x00' @ 0 : 0; will stop at '\x00F\x00\x00\x05' @ 129684 : 1
+2026/01/12-12:47:57.738 be8 Compacting 1@0 + 1@1 files
+2026/01/12-12:47:57.774 be8 Generated table #182@0: 61956 keys, 1195548 bytes
+2026/01/12-12:47:57.775 be8 Compacted 1@0 + 1@1 files => 1195548 bytes
+2026/01/12-12:47:57.775 be8 compacted to: files[ 0 1 1 0 0 0 0 ]
+2026/01/12-12:47:57.775 be8 Delete type=2 #181
+2026/01/12-12:47:57.775 be8 Manual compaction at level-0 from '\x00F\x00\x00\x05' @ 129684 : 1 .. '\x00G\x00\x00\x00' @ 0 : 0; will stop at (end)

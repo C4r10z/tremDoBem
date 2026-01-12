@@ -1,73 +1,45 @@
-import type { Order } from "../types";
+type NotifyPayload = { to: string; text: string };
 
-type OrderStatus = Order["status"];
-
-function statusLabel(s: OrderStatus) {
-  if (s === "PENDING") return "Pendente";
-  if (s === "IN_DELIVERY") return "Em entrega";
-  if (s === "DELIVERED") return "Entregue";
-  return "Cancelado";
-}
-
-function normalizePhoneBR(raw: string) {
+function normalizeToE164DigitsBR(raw: string) {
   const digits = (raw || "").replace(/\D/g, "");
   if (!digits) return "";
-  if (digits.startsWith("55")) return `+${digits}`;
-  if (digits.length >= 10 && digits.length <= 11) return `+55${digits}`;
-  return `+55${digits}`;
+  return digits.startsWith("55") ? digits : `55${digits}`;
 }
 
-function buildMessage(order: Order) {
-  const items = order.items
-    .map(it => `• ${it.name} — ${it.grams}g (R$ ${it.lineTotal.toFixed(2).replace(".", ",")})`)
-    .join("\n");
-
-  const total = `R$ ${order.totals.subtotal.toFixed(2).replace(".", ",")}`;
-
-  return [
-    `🛒 *Trem do Bem*`,
-    `Pedido: *${order.id}*`,
-    `Status: *${statusLabel(order.status)}*`,
-    ``,
-    `📦 *Itens:*`,
-    items || "—",
-    ``,
-    `💰 *Subtotal:* ${total}`,
-    ``,
-    `📍 *Entrega:* ${order.customer.address}`,
-    order.customer.reference ? `🧭 *Ref:* ${order.customer.reference}` : null
-  ].filter(Boolean).join("\n");
-}
-
-export async function notifyWhatsappOrderUpdate(order: Order) {
-  const enabled = (process.env.WHATSAPP_ENABLED || "false").toLowerCase() === "true";
+export async function notifyWhatsApp(toPhone: string, text: string) {
+  const enabled = String(process.env.WHATSAPP_ENABLED || "").toLowerCase() === "true";
   const url = process.env.WHATSAPP_WEBHOOK_URL || "";
 
-  const to = normalizePhoneBR(order.customer.phone);
-  const text = buildMessage(order);
+  if (!enabled) return { ok: false, skipped: true, reason: "WHATSAPP_ENABLED=false" };
+  if (!url) return { ok: false, skipped: true, reason: "WHATSAPP_WEBHOOK_URL not set" };
 
-  console.log("[whatsapp] enabled:", enabled, "url:", url, "to:", to);
+  const phone = normalizeToE164DigitsBR(toPhone);
+  if (!phone) return { ok: false, skipped: true, reason: "invalid_phone" };
 
-  if (!enabled || !url) {
-    console.log("[whatsapp] skipped (disabled or missing url)");
-    return;
+  const payload: NotifyPayload = { to: phone, text };
+
+  const res = await fetch(url, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      // ✅ evita a página de aviso do ngrok (free)
+      "ngrok-skip-browser-warning": "1"
+    },
+    body: JSON.stringify(payload),
+  });
+
+  // se ngrok devolver HTML do warning, isso vai capturar no body
+  if (!res.ok) {
+    const body = await res.text().catch(() => "");
+    throw new Error(`WhatsApp notify failed: ${res.status} ${body.slice(0, 300)}`);
   }
-  if (!to) {
-    console.log("[whatsapp] skipped (invalid phone)");
-    return;
-  }
 
+  // tenta parsear JSON; se vier HTML, falha com mensagem clara
+  const txt = await res.text().catch(() => "");
   try {
-    const resp = await fetch(url, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ to, text, orderId: order.id, status: order.status })
-    });
-
-    const body = await resp.text().catch(() => "");
-    console.log("[whatsapp] webhook status:", resp.status, body);
-
-  } catch (e: any) {
-    console.warn("[whatsapp] notify failed:", e?.message || e);
+    return txt ? JSON.parse(txt) : { ok: true };
+  } catch {
+    // ngrok warning costuma retornar HTML
+    throw new Error(`WhatsApp notify returned non-JSON response: ${txt.slice(0, 200)}`);
   }
 }
